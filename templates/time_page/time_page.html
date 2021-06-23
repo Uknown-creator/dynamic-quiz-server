@@ -5,7 +5,7 @@
     <title>Додо пицца</title>
     <style>
         body {
-            background: url(../../static/ar-blur.png);
+            background: url(../../static/fon2.jpg);
             background-size: 100%;
         }
         #first_img{
@@ -79,13 +79,21 @@
     </style>
 </head>
 <body>
-    <img id="first_img" src="../../static/i1img1.png" width="300" height="300">
-    <img id="second_img" src="../../static/i1img2.png" width="300" height="300">
-    <img id="third_img" src="../../static/i2img1.png" width="300" height="300">
-    <img id="fourth_img" src="../../static/i2img2.png" width="300" height="300">
-    <button id="first_button">Через 15 минут</button>
-    <button id="second_button">Через 30 минут</button>
-    <button id="third_button">Через час</button>
-    <button id="fourth_button">Без разницы</button>
+    <img id="first_img" src="/static/time1.png" width="300" height="300">
+    <img id="second_img" src="/static/time2.png" width="300" height="300">
+    <img id="third_img" src="/static/time3.png" width="300" height="300">
+    <img id="fourth_img" src="/static/time4.png" width="300" height="300">
+    <form action="/open_i/15m" method="post" enctype="application/x-www-form-urlencoded">
+        <button id="first_button">Через 15 минут</button>
+    </form>
+    <form action="/open_i/30m" method="post" enctype="application/x-www-form-urlencoded">
+        <button id="second_button">Через 30 минут</button>
+    </form>
+    <form action="/open_i/60m" method="post" enctype="application/x-www-form-urlencoded">
+        <button id="third_button">Через час</button>
+    </form>
+    <form action="/open_i/no_m" method="post" enctype="application/x-www-form-urlencoded">
+        <button id="fourth_button">Без разницы</button>
+    </form>
 </body>
 </html>

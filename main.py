@@ -49,6 +49,13 @@ config_update('rule', 0)
 config_update('out', '')
 
 
+def end(item_id: str):
+    old_out = config["cfg"]["out"]
+    new_out = old_out + item_id + ";"  # все записывается подряд, потому разделитель - это ";"
+    config_update('out', new_out)
+    webbrowser.open('https://dodopizza.ru/peterburg#pizzas', new=0, autoraise=True)  # открыте сайта dodo
+
+
 @app.get("/")  # старт кивза
 async def root(request: Request):
     config_update('i', 1)  # по умолчанию после запуска квиза счетчик вопросов становится на едниниицу
@@ -69,6 +76,10 @@ async def root(request: Request, mr: str = Form(...)):
 @app.post('/open_i/{item_id}')
 async def root(item_id: str, request: Request):
     print(item_id)  # колбэк от шаблона
+    if((item_id == '15m') or (item_id == '30m') or (item_id == '60m') or (item_id == 'no_m')):
+        end(item_id)
+        сontext = {"request": request}
+        return templates.TemplateResponse("end_page/end_page.html", сontext)
     i = int(config["cfg"]["i"])  # получаем текущий i
     rule = config["cfg"]["rule"]
     if (int(rule) == int(i)):
@@ -76,8 +87,8 @@ async def root(item_id: str, request: Request):
     if (int(i) == (int(config["cfg"]["max_i"]) + 1)):
         сontext = {"request": request}
         return templates.TemplateResponse("time_page/time_page.html", сontext)
-    elif (int(i) == (int(config["cfg"]["max_i"]) + 2)):  # если то, что мы сейчас хотим отобразить отсутсвует в конфиге, завершаем квиз
-        webbrowser.open('https://dodopizza.ru/peterburg#pizzas', new=0, autoraise=True) # открыте сайта dodo
+    #elif (int(i) == (int(config["cfg"]["max_i"]) + 2)):  # если то, что мы сейчас хотим отобразить отсутсвует в конфиге, завершаем квиз
+    #    webbrowser.open('https://dodopizza.ru/peterburg#pizzas', new=0, autoraise=True) # открыте сайта dodo
     next_i = int(i) + 1
     config_update('i', next_i)  # записываем следующий i(i+1 по отношению к текущему, открывающемуся сейчас)
     b = config_parser(i)
@@ -89,9 +100,6 @@ async def root(item_id: str, request: Request):
         old_out = config["cfg"]["out"]
         new_out = old_out + str(b['button_q2']) + ";"
         config_update('out', new_out)
-    if (int(i) > int(config["cfg"]["max_i"])):  # если мы уже выводили последний вопрос, вовыодим end и перенаправяем на dodo
-        сontext = {"request": request}
-        return templates.TemplateResponse("end_page/end_page.html", сontext)
     сontext = {"request": request, 'uslovie': b["uslovie"], 'question': b['question'], 'img1': '/static/' + b['img1'], 'img2': '/static/' + b['img2'], 'button_q1': b['button_q1'], 'button_q2': b['button_q2']}
     return templates.TemplateResponse("i_page/i_page.html", сontext)
 
