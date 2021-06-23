@@ -73,7 +73,10 @@ async def root(item_id: str, request: Request):
     rule = config["cfg"]["rule"]
     if (int(rule) == int(i)):
         i += 1
-    if (int(i) > int(config["cfg"]["max_i"])):  # если то, что мы сейчас хотим отобразить отсутсвует в конфиге, завершаем квиз
+    if (int(i) == (int(config["cfg"]["max_i"]) + 1)):
+        сontext = {"request": request}
+        return templates.TemplateResponse("time_page/time_page.html", сontext)
+    elif (int(i) == (int(config["cfg"]["max_i"]) + 2)):  # если то, что мы сейчас хотим отобразить отсутсвует в конфиге, завершаем квиз
         webbrowser.open('https://dodopizza.ru/peterburg#pizzas', new=0, autoraise=True) # открыте сайта dodo
     next_i = int(i) + 1
     config_update('i', next_i)  # записываем следующий i(i+1 по отношению к текущему, открывающемуся сейчас)
